@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Search Guitars</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header>
+        <ul>
+            <li><a href="index.html" class="top-left">Guitar Inventory Management</a></li>
+            <li><a href="search.html" class="top-right">Search</a></li>
+            <li><a href="add.html" class="top-right">Add</a></li>
+            <li><a href="about.html" class="top-right">About</a></li>
+        </ul>
+    </header>
+
+    <form id="guitarForm">
+        <p>
+            <label>Price:</label>
+            <input id="price" />
+        </p>
+        <p>
+            <label>Builder:</label>
+            <input id="builder" />
+        </p>
+        <p>
+            <label>Model:</label>
+            <input id="model" />
+        </p>
+        <p>
+            <label>Type:</label>
+            <input id="type" />
+        </p>
+        <p>
+            <label>Back Wood:</label>
+            <input id="backWood" />
+        </p>
+        <p>
+            <label>Top Wood:</label>
+            <input id="topWood" />
+        </p>
+        <button onclick="search()">Search Guitar</button>
+    </form>
+    
+
+    <table>
+      <thead>
+        <tr>
+          <th>Builder</th>
+          <th>Type</th>
+          <th>Model</th>
+          <th>Back Wood</th>
+          <th>Top Wood</th>
+        </tr>
+      </thead>
+      <tbody id="searchResult"></tbody>
+    </table>
+  </body>
+  <script>
+    let guitars = [
+      {
+        builder: "Fender",
+        model: "Stratocaster",
+        type: "Electric",
+        backWood: "Alder",
+        topWood: "Maple",
+      },
+      {
+        builder: "Gibson",
+        model: "Les Paul",
+        type: "Electric",
+        backWood: "Mahogany",
+        topWood: "Maple",
+      },
+      {
+        builder: "Martin",
+        model: "D-18",
+        type: "Acoustic",
+        backWood: "Mahogany",
+        topWood: "Spruce",
+      },
+      {
+        builder: "Taylor",
+        model: "914ce",
+        type: "Acoustic",
+        backWood: "Rosewood",
+        topWood: "Spruce",
+      },
+      {
+        builder: "Fender",
+        model: "Telecaster",
+        type: "Electric",
+        backWood: "Alder",
+        topWood: "Maple",
+      },
+    ];
+    function search() {
+      let builder = document.getElementById("builder").value;
+      let model = document.getElementById("model").value;
+      let type = document.getElementById("type").value;
+      let backWood = document.getElementById("backWood").value;
+      let topWood = document.getElementById("topWood").value;
+
+      let table = document.getElementById("searchResult");
+      table.innerHTML = "";
+      for (let guitar of guitars) {
+        if (
+          guitar.builder.toLowerCase() === builder.toLowerCase() ||
+          guitar.model.toLowerCase() === model.toLowerCase() ||
+          guitar.type.toLowerCase() === type.toLowerCase() ||
+          guitar.backWood.toLowerCase() === backWood.toLowerCase() ||
+          guitar.topWood.toLowerCase() === topWood.toLowerCase()
+        ) {
+          let row = table.insertRow();
+          let builderCell = row.insertCell(0);
+          let typeCell = row.insertCell(1);
+          let modelCell = row.insertCell(2);
+          let backWoodCell = row.insertCell(3);
+          let topWoodCell = row.insertCell(4);
+          builderCell.innerHTML = guitar.builder;
+          typeCell.innerHTML = guitar.type;
+          modelCell.innerHTML = guitar.model;
+          backWoodCell.innerHTML = guitar.backWood;
+          topWoodCell.innerHTML = guitar.topWood;
+        }
+      }
+      event.preventDefault();
+    }
+  </script>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Guitar</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header>
+        <ul>
+            <li><a href="index.html" class="top-left">Guitar Inventory Management</a></li>
+            <li><a href="search.html" class="top-right">Search</a></li>
+            <li><a href="add.html" class="top-right">Add</a></li>
+        </ul>
+    </header>
+    <form id="guitarForm">
+        <p>
+            <label>Serial Number:</label>
+            <input id="serialNumber" />
+        </p>
+        <p>
+            <label>Price:</label>
+            <input id="price" />
+        </p>
+        <p>
+            <label>Builder:</label>
+            <input id="builder" />
+        </p>
+        <p>
+            <label>Model:</label>
+            <input id="model" />
+        </p>
+        <p>
+            <label>Type:</label>
+            <input id="type" />
+        </p>
+        <p>
+            <label>Back Wood:</label>
+            <input id="backWood" />
+        </p>
+        <p>
+            <label>Top Wood:</label>
+            <input id="topWood" />
+        </p>
+      <button onclick="addGuitar()">Add Guitar</button>
+    </form>
+
+    <script>
+        const dbName = "guitars.txt";
+
+      function addGuitar() {
+        let serialNumberNode = document.getElementById("serialNumber");
+        let serialNumber = serialNumberNode.value;
+        let priceNode = document.getElementById("price");
+        let price = priceNode.value;
+        let builderNode = document.getElementById("builder");
+        let builder = builderNode.value;
+        let modelNode = document.getElementById("model");
+        let model = modelNode.value;
+        let typeNode = document.getElementById("type");
+        let type = typeNode.value;
+        let backWoodNode = document.getElementById("backWood");
+        let backWood = backWoodNode.value;
+        let topWoodNode = document.getElementById("topWood");
+        let topWood = topWoodNode.value;
+        let guitar = {
+          serialNumber: serialNumber,
+          price: price,
+          builder: builder,
+          model: model,
+          type: type,
+          backWood: backWood,
+          topWood: topWood,
+        };
+
+        alert("You entered: " + JSON.stringify(guitar));
+      }
+    </script>
+  </body>
+</html>
