@@ -41,7 +41,7 @@
             <label>Top Wood:</label>
             <input id="topWood" />
         </p>
-        <button onclick="search()">Search Guitar</button>
+        <button type="button" onclick="search()">Search Guitar</button>
     </form>
     
 
@@ -57,76 +57,56 @@
       </thead>
       <tbody id="searchResult"></tbody>
     </table>
-  </body>
-  <script>
-    let guitars = [
-      {
-        builder: "Fender",
-        model: "Stratocaster",
-        type: "Electric",
-        backWood: "Alder",
-        topWood: "Maple",
-      },
-      {
-        builder: "Gibson",
-        model: "Les Paul",
-        type: "Electric",
-        backWood: "Mahogany",
-        topWood: "Maple",
-      },
-      {
-        builder: "Martin",
-        model: "D-18",
-        type: "Acoustic",
-        backWood: "Mahogany",
-        topWood: "Spruce",
-      },
-      {
-        builder: "Taylor",
-        model: "914ce",
-        type: "Acoustic",
-        backWood: "Rosewood",
-        topWood: "Spruce",
-      },
-      {
-        builder: "Fender",
-        model: "Telecaster",
-        type: "Electric",
-        backWood: "Alder",
-        topWood: "Maple",
-      },
-    ];
-    function search() {
-      let builder = document.getElementById("builder").value;
-      let model = document.getElementById("model").value;
-      let type = document.getElementById("type").value;
-      let backWood = document.getElementById("backWood").value;
-      let topWood = document.getElementById("topWood").value;
 
-      let table = document.getElementById("searchResult");
-      table.innerHTML = "";
-      for (let guitar of guitars) {
-        if (
-          guitar.builder.toLowerCase() === builder.toLowerCase() ||
-          guitar.model.toLowerCase() === model.toLowerCase() ||
-          guitar.type.toLowerCase() === type.toLowerCase() ||
-          guitar.backWood.toLowerCase() === backWood.toLowerCase() ||
-          guitar.topWood.toLowerCase() === topWood.toLowerCase()
-        ) {
-          let row = table.insertRow();
-          let builderCell = row.insertCell(0);
-          let typeCell = row.insertCell(1);
-          let modelCell = row.insertCell(2);
-          let backWoodCell = row.insertCell(3);
-          let topWoodCell = row.insertCell(4);
-          builderCell.innerHTML = guitar.builder;
-          typeCell.innerHTML = guitar.type;
-          modelCell.innerHTML = guitar.model;
-          backWoodCell.innerHTML = guitar.backWood;
-          topWoodCell.innerHTML = guitar.topWood;
-        }
+    <script>
+      function search() {
+        let builder = document.getElementById("builder").value.toLowerCase();
+        let model = document.getElementById("model").value.toLowerCase();
+        let type = document.getElementById("type").value.toLowerCase();
+        let backWood = document.getElementById("backWood").value.toLowerCase();
+        let topWood = document.getElementById("topWood").value.toLowerCase();
+
+        fetch("http://localhost:8080/inventory/search", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            builder: builder,
+            model: model,
+            type: type,
+            backWood: backWood,
+            topWood: topWood
+          }),
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then(data => {
+          let table = document.getElementById("searchResult");
+          table.innerHTML = ""; // Clear previous search results
+          data.forEach(guitar => {
+            let row = table.insertRow();
+            let builderCell = row.insertCell(0);
+            let typeCell = row.insertCell(1);
+            let modelCell = row.insertCell(2);
+            let backWoodCell = row.insertCell(3);
+            let topWoodCell = row.insertCell(4);
+            builderCell.innerHTML = guitar.builder;
+            typeCell.innerHTML = guitar.type;
+            modelCell.innerHTML = guitar.model;
+            backWoodCell.innerHTML = guitar.backWood;
+            topWoodCell.innerHTML = guitar.topWood;
+          });
+        })
+        .catch(error => {
+          console.error("Error:", error);
+          alert("An error occurred while searching. Please try again later.");
+        });
       }
-      event.preventDefault();
-    }
-  </script>
+    </script>
+  </body>
 </html>
