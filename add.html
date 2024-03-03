@@ -77,8 +77,7 @@
                 topWood: topWood.toUpperCase().replace(" ", "_"),
             };
 
-            // Assuming you're using fetch API to send data to the backend
-            fetch("http://localhost:8080/inventory/add", {
+            fetch("https://guitar-inventory-management-latest-ymah.onrender.com/add", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
