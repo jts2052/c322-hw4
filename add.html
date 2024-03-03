@@ -44,39 +44,67 @@
             <label>Top Wood:</label>
             <input id="topWood" />
         </p>
-      <button onclick="addGuitar()">Add Guitar</button>
+      <button type="button" onclick="addGuitar()">Add Guitar</button>
     </form>
+
+    <!-- Pop-up message div -->
+    <div id="popupMessage" style="display: none;"></div>
 
     <script>
         const dbName = "guitars.txt";
 
-      function addGuitar() {
-        let serialNumberNode = document.getElementById("serialNumber");
-        let serialNumber = serialNumberNode.value;
-        let priceNode = document.getElementById("price");
-        let price = priceNode.value;
-        let builderNode = document.getElementById("builder");
-        let builder = builderNode.value;
-        let modelNode = document.getElementById("model");
-        let model = modelNode.value;
-        let typeNode = document.getElementById("type");
-        let type = typeNode.value;
-        let backWoodNode = document.getElementById("backWood");
-        let backWood = backWoodNode.value;
-        let topWoodNode = document.getElementById("topWood");
-        let topWood = topWoodNode.value;
-        let guitar = {
-          serialNumber: serialNumber,
-          price: price,
-          builder: builder,
-          model: model,
-          type: type,
-          backWood: backWood,
-          topWood: topWood,
-        };
+        function addGuitar() {
+            let serialNumber = document.getElementById("serialNumber").value;
+            let price = document.getElementById("price").value;
+            let builder = document.getElementById("builder").value;
+            let model = document.getElementById("model").value;
+            let type = document.getElementById("type").value;
+            let backWood = document.getElementById("backWood").value;
+            let topWood = document.getElementById("topWood").value;
 
-        alert("You entered: " + JSON.stringify(guitar));
-      }
+            if (!serialNumber || !price || !builder || !model || !type || !backWood || !topWood) {
+                alert("Please enter a value for all fields.");
+                return;
+            }
+
+            let guitar = {
+                serialNumber: serialNumber,
+                price: price,
+                builder: builder.toUpperCase(),
+                model: model,
+                type: type.toUpperCase(),
+                backWood: backWood.toUpperCase().replace(" ", "_"),
+                topWood: topWood.toUpperCase().replace(" ", "_"),
+            };
+
+            fetch("https://guitar-inventory-management-latest-ymah.onrender.com/add", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(guitar),
+            })
+            .then(response => {
+                if (response.ok) {
+                    displayPopup("The guitar was added to the system");
+                } else {
+                    displayPopup("Something went wrong. Please try again or contact the customer support team.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                displayPopup("Something went wrong. Please try again or contact the customer support team.");
+            });
+        }
+
+        function displayPopup(message) {
+            let popupMessage = document.getElementById("popupMessage");
+            popupMessage.innerText = message;
+            popupMessage.style.display = "block";
+            setTimeout(() => {
+                popupMessage.style.display = "none";
+            }, 3000); // Hide after 3 seconds
+        }
     </script>
   </body>
 </html>
