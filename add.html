@@ -8,11 +8,12 @@
   </head>
   <body>
     <header>
-        <ul>
+        <ul class="topnav">
             <li><a href="index.html" class="top-left">Guitar Inventory Management</a></li>
             <li><a href="search.html" class="top-right">Search</a></li>
             <li><a href="add.html" class="top-right">Add</a></li>
             <li><a href="about.html" class="top-right">About</a></li>
+            <li><a href="login.html" class="top-right">Login</a></li>
         </ul>
     </header>
     <form id="guitarForm">
@@ -50,7 +51,9 @@
     <!-- Pop-up message div -->
     <div id="popupMessage" style="display: none;"></div>
 
+    <script src="config.js"></script>
     <script>
+        updateNavBar();
         const dbName = "guitars.txt";
 
         function addGuitar() {
@@ -77,10 +80,11 @@
                 topWood: topWood.toUpperCase().replace(" ", "_"),
             };
 
-            fetch("https://guitar-inventory-management-latest-ymah.onrender.com/add", {
+            fetch(`${config.host()}/inventory/add`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": "Bearer " + config.token(),
                 },
                 body: JSON.stringify(guitar),
             })

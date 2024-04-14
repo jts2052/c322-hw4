@@ -8,11 +8,12 @@
   </head>
   <body>
     <header>
-        <ul>
+        <ul class="topnav">
             <li><a href="index.html" class="top-left">Guitar Inventory Management</a></li>
             <li><a href="search.html" class="top-right">Search</a></li>
             <li><a href="add.html" class="top-right">Add</a></li>
             <li><a href="about.html" class="top-right">About</a></li>
+            <li><a href="login.html" class="top-right">Login</a></li>
         </ul>
     </header>
 
@@ -48,6 +49,7 @@
     <table>
       <thead>
         <tr>
+          <th>Price</th>
           <th>Builder</th>
           <th>Type</th>
           <th>Model</th>
@@ -58,6 +60,7 @@
       <tbody id="searchResult"></tbody>
     </table>
 
+    <script src="config.js"></script>
     <script>
       function search() {
         let builder = document.getElementById("builder").value.toLowerCase();
@@ -66,10 +69,11 @@
         let backWood = document.getElementById("backWood").value.toLowerCase();
         let topWood = document.getElementById("topWood").value.toLowerCase();
 
-        fetch("http://localhost:8080/inventory/search", {
+        fetch(`${config.host()}/inventory/search`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${config.token()}`,
           },
           body: JSON.stringify({
             builder: builder,
@@ -90,11 +94,13 @@
           table.innerHTML = ""; // Clear previous search results
           data.forEach(guitar => {
             let row = table.insertRow();
-            let builderCell = row.insertCell(0);
-            let typeCell = row.insertCell(1);
-            let modelCell = row.insertCell(2);
-            let backWoodCell = row.insertCell(3);
-            let topWoodCell = row.insertCell(4);
+            let priceCell = row.insertCell(0);
+            let builderCell = row.insertCell(1);
+            let typeCell = row.insertCell(2);
+            let modelCell = row.insertCell(3);
+            let backWoodCell = row.insertCell(4);
+            let topWoodCell = row.insertCell(5);
+            priceCell.innerHTML = guitar.price;
             builderCell.innerHTML = guitar.builder;
             typeCell.innerHTML = guitar.type;
             modelCell.innerHTML = guitar.model;
